@@ -1,29 +1,18 @@
 <script setup lang="ts">
-// chrome.identity.launchWebAuthFlow(
-//   {
-//     interactive: true,
-//     url:
-//       `https://github.com/login/oauth/authorize` +
-//       `?client_id=55e294602d71eb006dc505540cf0614d6b3c7f35` +
-//       `&redirect_uri=https://ekgmcbpgglflmgcfajnglpbcbdccnnje.chromiumapp.org/github_cb` +
-//       `&scope=user.email`,
-//   },
-//   (a) => {
-//     console.log(a)
-//   }
-// )
+import { ref, watch } from 'vue';
 
-// v-medel for input text
-const highlight = ref(''); // v-model
+// v-medel for input texts
+const highlights = ref(['']); // v-model
 
-
-// watch highlight value change and send messae to content script
-watch(highlight, (value) => {
+// watch highlight array change and send message to content script
+watch(highlights, (value) => {
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-    chrome.tabs.sendMessage(tabs[0].id, { highlight: value });
+    chrome.tabs.sendMessage(tabs[0].id, { highlights: value });
   });
   console.log('highlight', value);
-});
+}, { deep: true });
+
+
 </script>
 
 <template>
@@ -31,9 +20,14 @@ watch(highlight, (value) => {
     <h2 class="text-3xl font-bold underline pb-6">Multiple Highlighter</h2>
 
     <div class="flex justify-center">
-      <input v-model="highlight" type="search" placeholder="highlight text" />
+      <input v-model="highlights[0]" type="search" placeholder="highlight text" />
     </div>
-    <p>bind text is: {{ highlight }}</p>
+    <div class="flex justify-center">
+      <input v-model="highlights[1]" type="search" placeholder="highlight text" />
+    </div>
+    <p>bind text is: {{ highlights[0] }}</p>
+    <p>bind text is: {{ highlights[1] }}</p>
+
     <RouterLink to="/about">About me</RouterLink>
   </div>
 </template>

@@ -1,5 +1,7 @@
 import * as Mark from 'mark.js';
 
+console.log('content script loaded')
+
 // mark.js
 const instance = new Mark(document.querySelector("body"));
 
@@ -9,7 +11,12 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   console.log('request', request)
   console.log('sender', sender)
 
+  console.log('highlights', request.highlights)
+  console.log('length', request.highlights.length)
+
   instance.unmark();
-  instance.mark(request.highlight);
-})
+  request.highlights.forEach((highlight) => {
+    instance.mark(highlight);
+  });
+});
 
