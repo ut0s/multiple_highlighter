@@ -1,12 +1,15 @@
-import './index.scss'
+import * as Mark from 'mark.js';
 
-const src = chrome.runtime.getURL('src/content-script/iframe/index.html')
+// mark.js
+const instance = new Mark(document.querySelector("body"));
 
-const iframe = new DOMParser().parseFromString(
-  `<iframe class="crx-iframe" src="${src}"></iframe>`,
-  'text/html'
-).body.firstElementChild
+// receive message from popup and background
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  sendResponse('content script received message')
+  console.log('request', request)
+  console.log('sender', sender)
 
-if (iframe) {
-  document.body?.append(iframe)
-}
+  instance.unmark();
+  instance.mark(request.highlight);
+})
+
