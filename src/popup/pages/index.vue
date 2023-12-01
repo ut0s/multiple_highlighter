@@ -12,21 +12,20 @@ watch(highlights, (value) => {
   console.log('highlight', value);
 }, { deep: true });
 
-
 </script>
 
 <template>
   <div class="text-center m-4">
     <h2 class="text-3xl font-bold underline pb-6">Multiple Highlighter</h2>
 
-    <div class="flex justify-center">
-      <input v-model="highlights[0]" type="search" placeholder="highlight text" />
+    <div v-for="(highlight, index) in highlights" :key="index" class="flex justify-center">
+      <input v-model="highlights[index]" type="search" placeholder="highlight text" />
     </div>
+
     <div class="flex justify-center">
-      <input v-model="highlights[1]" type="search" placeholder="highlight text" />
+      <button class="border" @click="highlights.push('')">++++++</button>
+      <button class="border" @click="highlights.push('')">ADD</button>
     </div>
-    <p>bind text is: {{ highlights[0] }}</p>
-    <p>bind text is: {{ highlights[1] }}</p>
 
     <RouterLink to="/about">About me</RouterLink>
   </div>
