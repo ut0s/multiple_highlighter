@@ -23,8 +23,10 @@ watch(highlights, (value) => {
     </div>
 
     <div class="flex justify-center">
-      <button class="border" @click="highlights.push('')">++++++</button>
       <button class="border" @click="highlights.push('')">ADD</button>
+    </div>
+    <div class="flex justify-center">
+      <button class="border" @click="highlights = ['']">CLEAR</button>
     </div>
 
     <RouterLink to="/about">About me</RouterLink>
