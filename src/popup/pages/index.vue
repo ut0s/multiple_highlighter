@@ -19,7 +19,7 @@ watch(highlights, (value) => {
     <h2 class="text-3xl font-bold underline pb-6">Multiple Highlighter</h2>
 
     <div v-for="(highlight, index) in highlights" :key="index" class="flex justify-center">
-      <input v-model="highlights[index]" type="search" placeholder="highlight text" />
+      <input v-model="highlights[index]" type="search" placeholder="highlight text" @blur="highlights.push('')" />
       <div v-if="index != 0" class="flex justify-center">
         <button class="border" @click="highlights.splice(index, 1)">REMOVE THIS</button>
       </div>
