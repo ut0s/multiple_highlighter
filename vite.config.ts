@@ -40,6 +40,10 @@ export default defineConfig({
           dir: 'src/content-script/iframe/pages',
           baseRoute: 'iframe',
         },
+        {
+          dir: 'src/sidepanel/pages',
+          baseRoute: 'sidepanel',
+        },
       ],
     }),
 
