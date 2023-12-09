@@ -87,12 +87,16 @@ function clear() {
 
 <template>
   <div class="bg-white dark:bg-slate-800">
-    <div v-for="(highlight, index) in     highlights    " :key="index" class="flex border rounded m-1 divide-x">
+    <div v-for="(highlight, index) in              highlights             " :key="index"
+      class="flex border rounded m-1 divide-x">
       <div class="flex grow">
         <input v-model="highlights[index]" type="" class="text-slate-500 dark:text-slate-400 rounded grow"
           placeholder="  highlight text" @blur="highlights.push('')" />
-        <div v-if="highlight" class=" flex text-base mx-1 text-slate-400">
+        <div v-if="highlight && Number(foundCount[index]) != 0" class="flex text-base mx-1 text-slate-400">
           {{ position[index] + 1 }} / {{ foundCount[index] }}
+        </div>
+        <div v-else-if="highlight && Number(foundCount[index]) == 0" class="flex text-base mx-1 text-slate-400 ">
+          {{ position[index] }} / {{ foundCount[index] }}
         </div>
       </div>
       <div class="flex text-2xl text-slate-700">
