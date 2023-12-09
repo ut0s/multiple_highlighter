@@ -33,7 +33,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     position.value = request.position;
   }
 
-  console.table(foundCount.value, position.value);
+  console.table(foundCount.value);
+  console.table(position.value);
 });
 
 
@@ -57,16 +58,40 @@ function moveDown(idx: any) {
   });
 };
 
+// remove
+function remove(index: any) {
+  highlights.value.splice(index, 1);
+  foundCount.value.splice(index, 1);
+  position.value.splice(index, 1);
+  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+    chrome.tabs.sendMessage(tabs[0].id, {
+      type: 'remove',
+      foundCount: foundCount.value,
+      position: position.value
+    });
+  });
+}
 
+// clear result
+function clear() {
+  highlights.value = [''];
+  foundCount.value = [];
+  position.value = [];
+  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+    chrome.tabs.sendMessage(tabs[0].id, {
+      type: 'clear',
+    });
+  });
+}
 </script>
 
 <template>
   <div class="bg-white dark:bg-slate-800">
-    <div v-for="(highlight, index) in highlights" :key="index" class="flex border rounded m-1 divide-x">
+    <div v-for="(highlight, index) in     highlights    " :key="index" class="flex border rounded m-1 divide-x">
       <div class="flex grow">
         <input v-model="highlights[index]" type="" class="text-slate-500 dark:text-slate-400 rounded grow"
           placeholder="  highlight text" @blur="highlights.push('')" />
-        <div class="flex text-base mx-1 text-slate-400">
+        <div v-if="highlight" class=" flex text-base mx-1 text-slate-400">
           {{ position[index] + 1 }} / {{ foundCount[index] }}
         </div>
       </div>
@@ -74,7 +99,7 @@ function moveDown(idx: any) {
         <icon-chevron-up-circle @click="moveDown(index)" />
         <icon-chevron-down-circle @click="moveUp(index)" />
         <div v-if="index != 0">
-          <icon-minus-circle @click="highlights.splice(index, 1)" />
+          <icon-minus-circle @click="remove(index)" />
         </div>
         <div v-else>
           <icon-minus-circle class="invisible" />
@@ -83,8 +108,9 @@ function moveDown(idx: any) {
     </div>
     <div class="flex justify-center mx-5 text-2xl text-slate-700">
       <icon-plus-circle class="m-1" @click="highlights.push('')" />
-      <icon-minus-circle-multiple class="m-1" @click="highlights = ['']" />
+      <icon-minus-circle-multiple class="m-1" @click="clear()" />
     </div>
+
     <RouterLink to="/about">About me</RouterLink>
   </div>
 </template>

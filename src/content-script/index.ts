@@ -56,7 +56,9 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
           // },
           "done": function (counter: number) {
             foundCount[idx] = counter;
-            position[idx] = 0;
+            if (counter !== 0) {
+              position[idx] = 0;
+            }
           },
           // "debug": true,
           // "log": window.console
@@ -102,6 +104,16 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       chrome.runtime.sendMessage({
         position: position,
       });
+      break;
+    }
+    case "remove": {
+      foundCount = request.foundCount;
+      position = request.position;
+      break;
+    }
+    case "clear": {
+      foundCount = [];
+      position = [];
       break;
     }
     default:
