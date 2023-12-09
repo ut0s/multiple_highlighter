@@ -11,20 +11,53 @@ import IconMinusCircle from '~icons/mdi/minus-circle'
 // v-medel for input texts
 const highlights = ref(['']); // v-model
 const foundCount = ref(['']); // v-model
+const position = ref(['']); // v-model
 
 // watch highlight array change and send message to content script
 watch(highlights, (value) => {
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-    chrome.tabs.sendMessage(tabs[0].id, { highlights: value });
+    chrome.tabs.sendMessage(tabs[0].id, {
+      type: 'highlight',
+      highlights: value
+    });
   });
   console.log('highlight', value);
 }, { deep: true });
 
 // get highlight found counts from content script
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  foundCount.value = request.foundCount;
-  console.log('foundCount', foundCount.value);
+  if (request.foundCount !== undefined) {
+    foundCount.value = request.foundCount;
+  }
+  if (request.position !== undefined) {
+    position.value = request.position;
+  }
+
+  console.table(foundCount.value, position.value);
 });
+
+
+
+// move class multiple-highlighter-[idx] in page
+function moveUp(idx: any) {
+  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+    chrome.tabs.sendMessage(tabs[0].id, {
+      type: 'moveUp',
+      index: idx
+    });
+  });
+};
+
+function moveDown(idx: any) {
+  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+    chrome.tabs.sendMessage(tabs[0].id, {
+      type: 'moveDown',
+      index: idx
+    });
+  });
+};
+
+
 </script>
 
 <template>
@@ -34,12 +67,12 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         <input v-model="highlights[index]" type="" class="text-slate-500 dark:text-slate-400 rounded grow"
           placeholder="  highlight text" @blur="highlights.push('')" />
         <div class="flex text-base mx-1 text-slate-400">
-          {{ foundCount[index] }}
+          {{ position[index] + 1 }} / {{ foundCount[index] }}
         </div>
       </div>
       <div class="flex text-2xl text-slate-700">
-        <icon-chevron-up-circle @click="" />
-        <icon-chevron-down-circle @click="" />
+        <icon-chevron-up-circle @click="moveDown(index)" />
+        <icon-chevron-down-circle @click="moveUp(index)" />
         <div v-if="index != 0">
           <icon-minus-circle @click="highlights.splice(index, 1)" />
         </div>
