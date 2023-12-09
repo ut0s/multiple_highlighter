@@ -10,6 +10,7 @@ import IconMinusCircle from '~icons/mdi/minus-circle'
 
 // v-medel for input texts
 const highlights = ref(['']); // v-model
+const foundCount = ref(['']); // v-model
 
 // watch highlight array change and send message to content script
 watch(highlights, (value) => {
@@ -19,23 +20,23 @@ watch(highlights, (value) => {
   console.log('highlight', value);
 }, { deep: true });
 
-// get highlight result from content script
+// get highlight found counts from content script
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  // sendResponse('sidepanel received message')
-  // console.log('request', request)
-  // console.log('sender', sender)
-  console.log('filter', request.filter)
-}
-);
-
-
+  foundCount.value = request.foundCount;
+  console.log('foundCount', foundCount.value);
+});
 </script>
 
 <template>
   <div class="bg-white dark:bg-slate-800">
-    <div v-for="(highlight, index) in highlights" :key="index" class="flex border rounded m-1  divide-x">
-      <input v-model="highlights[index]" type="" class="text-slate-500 dark:text-slate-400 rounded grow"
-        placeholder="  highlight text" @blur="highlights.push('')" />
+    <div v-for="(highlight, index) in highlights" :key="index" class="flex border rounded m-1 divide-x">
+      <div class="flex grow">
+        <input v-model="highlights[index]" type="" class="text-slate-500 dark:text-slate-400 rounded grow"
+          placeholder="  highlight text" @blur="highlights.push('')" />
+        <div class="flex text-base mx-1 text-slate-400">
+          {{ foundCount[index] }}
+        </div>
+      </div>
       <div class="flex text-2xl text-slate-700">
         <icon-chevron-up-circle @click="" />
         <icon-chevron-down-circle @click="" />
