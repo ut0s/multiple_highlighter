@@ -1,5 +1,12 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
+import IconMinusCircleMultiple from '~icons/mdi/minus-circle-multiple'
+import IconChevronUpCircle from '~icons/mdi/chevron-up-circle'
+import IconChevronDownCircle from '~icons/mdi/chevron-down-circle'
+import IconPlusCircle from '~icons/mdi/plus-circle'
+import IconMinusCircle from '~icons/mdi/minus-circle'
+
+
 
 // v-medel for input texts
 const highlights = ref(['']); // v-model
@@ -12,24 +19,38 @@ watch(highlights, (value) => {
   console.log('highlight', value);
 }, { deep: true });
 
+// get highlight result from content script
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  // sendResponse('sidepanel received message')
+  // console.log('request', request)
+  // console.log('sender', sender)
+  console.log('filter', request.filter)
+}
+);
+
+
 </script>
 
 <template>
-  <div class="">
-    <div v-for="(highlight, index) in highlights" :key="index" class="flex justify-center">
-      <input v-model="highlights[index]" type="search" placeholder="highlight text" @blur="highlights.push('')" />
-      <div v-if="index != 0" class="flex justify-center">
-        <button class="border" @click="highlights.splice(index, 1)">REMOVE THIS</button>
+  <div class="bg-white dark:bg-slate-800">
+    <div v-for="(highlight, index) in highlights" :key="index" class="flex border rounded m-1  divide-x">
+      <input v-model="highlights[index]" type="" class="text-slate-500 dark:text-slate-400 rounded grow"
+        placeholder="  highlight text" @blur="highlights.push('')" />
+      <div class="flex text-2xl text-slate-700">
+        <icon-chevron-up-circle @click="" />
+        <icon-chevron-down-circle @click="" />
+        <div v-if="index != 0">
+          <icon-minus-circle @click="highlights.splice(index, 1)" />
+        </div>
+        <div v-else>
+          <icon-minus-circle class="invisible" />
+        </div>
       </div>
     </div>
-
-    <div class="flex justify-center">
-      <button class="border" @click="highlights.push('')">ADD</button>
+    <div class="flex justify-center mx-5 text-2xl text-slate-700">
+      <icon-plus-circle class="m-1" @click="highlights.push('')" />
+      <icon-minus-circle-multiple class="m-1" @click="highlights = ['']" />
     </div>
-    <div class="flex justify-center">
-      <button class="border" @click="highlights = ['']">CLEAR</button>
-    </div>
-
     <RouterLink to="/about">About me</RouterLink>
   </div>
 </template>
