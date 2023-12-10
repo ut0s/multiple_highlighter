@@ -85,11 +85,14 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         position[idx] = 0;
       }
       console.log("pos", position[idx])
-      const elements = document.querySelectorAll(".multiple-highlighter-" + request.index.toString());
+      const elements = document.querySelectorAll("mark.multiple-highlighter-" + idx.toString());
+      // console.log("elements", elements)
+      console.log("elements[idx]", elements[idx])
+      // TODO: make element visible
       elements[position[idx]].scrollIntoView({
         behavior: 'auto',
         block: 'center',
-        inline: 'nearest',
+        inline: 'center',
       });
 
       position[idx] += foundCount[idx]
