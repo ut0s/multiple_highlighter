@@ -26,7 +26,15 @@ watch(options, (newVal) => {
     console.table(options.value);
     console.log('options saved from watch');
   });
-});
+
+  // send message to content script
+  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+    chrome.tabs.sendMessage(tabs[0].id,
+      { type: 'options' }, (response) => {
+        console.log(response);
+      });
+  });
+}, { deep: true });
 
 // set default options function
 function resetDefaultOptions() {
@@ -70,7 +78,10 @@ onMounted(() => {
         <input type="checkbox" id="regex" v-model="options.useRegex" />
         <label for="regex"
           v-tooltip="{ content: 'Whether to search for each word separated by a blank instead of the complete term' }">
-          use regex</label>
+          use regex <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions"
+            target="_blank" class="underline"> (more
+            info)</a>
+        </label>
       </div>
       <div class="rounded m-1">
         <select id="accuracy" v-model="options.accuracy">
