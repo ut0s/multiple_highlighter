@@ -8,8 +8,6 @@ import IconMinusCircle from '~icons/mdi/minus-circle'
 import IconDotsVerticalCircle from '~icons/mdi/dots-vertical-circle'
 // mdi: circle - half - full
 
-
-
 // v-medel for input texts
 const highlights = ref(['']); // v-model
 const foundCount = ref(['']); // v-model
@@ -92,7 +90,7 @@ function clear() {
     <div class="flex">
       <div class="grow"></div>
       <div class="text-2xl text-slate-700">
-        <RouterLink to="/options">
+        <RouterLink to="/options" v-tooltip="{ content: 'Open option page' }">
           <icon-dots-vertical-circle />
         </RouterLink>
       </div>
@@ -111,10 +109,10 @@ function clear() {
         </div>
       </div>
       <div class="flex text-2xl text-slate-700">
-        <icon-chevron-up-circle @click="moveDown(index)" />
-        <icon-chevron-down-circle @click="moveUp(index)" />
+        <icon-chevron-up-circle v-tooltip="{ content: 'Previous' }" @click="moveDown(index)" />
+        <icon-chevron-down-circle v-tooltip="{ content: 'Next' }" @click="moveUp(index)" />
         <div v-if="index != 0">
-          <icon-minus-circle @click="remove(index)" />
+          <icon-minus-circle v-tooltip="{ content: 'Remove this text' }" @click="remove(index)" />
         </div>
         <div v-else>
           <icon-minus-circle class="invisible" />
@@ -122,12 +120,12 @@ function clear() {
       </div>
     </div>
     <div class="flex justify-center mx-5 text-2xl text-slate-700">
-      <icon-plus-circle class="m-1" @click="highlights.push('')" />
-      <icon-minus-circle-multiple class="m-1" @click="clear()" />
+      <icon-plus-circle class="m-1" v-tooltip="{ content: 'Add text box' }" @click="highlights.push('')" />
+      <icon-minus-circle-multiple class="m-1" v-tooltip="{ content: 'Clear all highlights' }" @click="clear()" />
     </div>
 
     <div class="flex justify-center underline m-5 text-slate-500">
-      <RouterLink to="/about"> by ut0s </RouterLink>
+      <RouterLink to="/about" v-tooltip="{ content: 'README' }"> by ut0s </RouterLink>
     </div>
   </div>
 </template>
