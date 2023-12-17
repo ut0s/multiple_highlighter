@@ -8,7 +8,7 @@ import IconMinusCircle from '~icons/mdi/minus-circle'
 import IconDotsVerticalCircle from '~icons/mdi/dots-vertical-circle'
 // mdi: circle - half - full
 
-
+// @floating-vue
 
 // v-medel for input texts
 const highlights = ref(['']); // v-model
