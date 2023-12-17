@@ -5,6 +5,8 @@ import IconChevronUpCircle from '~icons/mdi/chevron-up-circle'
 import IconChevronDownCircle from '~icons/mdi/chevron-down-circle'
 import IconPlusCircle from '~icons/mdi/plus-circle'
 import IconMinusCircle from '~icons/mdi/minus-circle'
+import IconDotsVerticalCircle from '~icons/mdi/dots-vertical-circle'
+// mdi: circle - half - full
 
 
 
@@ -87,6 +89,15 @@ function clear() {
 
 <template>
   <div class="bg-white dark:bg-slate-800">
+    <div class="flex">
+      <div class="grow"></div>
+      <div class="text-2xl text-slate-700">
+        <RouterLink to="/options">
+          <icon-dots-vertical-circle />
+        </RouterLink>
+      </div>
+    </div>
+
     <div v-for="(highlight, index) in              highlights             " :key="index"
       class="flex border rounded m-1 divide-x">
       <div class="flex grow">
@@ -115,7 +126,9 @@ function clear() {
       <icon-minus-circle-multiple class="m-1" @click="clear()" />
     </div>
 
-    <RouterLink to="/about">About me</RouterLink>
+    <div class="flex justify-center underline m-5 text-slate-500">
+      <RouterLink to="/about"> by ut0s </RouterLink>
+    </div>
   </div>
 </template>
 
