@@ -1,7 +1,12 @@
 <script setup lang="ts">
+import { ref, watch, onMounted } from 'vue';
 import IconDotsVerticalCircle from '~icons/mdi/dots-vertical-circle'
+import IconHelpCircle from '~icons/mdi/help-circle'
 import _ from 'lodash';
 
+import CheckBox from '~/Components/CheckBox.vue'
+import ModalAboutAccuracyOption from '~/Components/ModalAboutAccuracyOption.vue'
+import ModalAboutWildcardsOption from '~/Components/ModalAboutWildcardsOption.vue'
 
 const defaultOptions = {
   useRegex: false,
@@ -12,7 +17,6 @@ const defaultOptions = {
   acrossElements: false,
   caseSensitive: false,
   ignoreJoiners: false,
-  ignorePunctuation: [],
   wildcards: 'disabled'
 };
 
@@ -73,68 +77,75 @@ onMounted(() => {
       </h1>
     </div>
 
-    <div class="flex flex-col text-lg">
-      <div class="rounded m-1">
-        <input type="checkbox" id="regex" v-model="options.useRegex" />
-        <label for="regex"
-          v-tooltip="{ content: 'Whether to search for each word separated by a blank instead of the complete term' }">
-          use regex <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions"
-            target="_blank" class="underline"> (more
-            info)</a>
-        </label>
-      </div>
-      <div class="rounded m-1">
-        <select id="accuracy" v-model="options.accuracy">
-          <option disabled value="">Default: partially</option>
+    <div class="text-left text-lg">
+      <CheckBox label="use regex"
+        tooltip="Whether to search for each word separated by a blank instead of the complete term"
+        :isChecked="options.useRegex" @update:isChecked="options.useRegex = !options.useRegex" />
+
+      <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions" target="_blank"
+        class="text-slate-400 underline text-sm"> (more info about regex)</a>
+
+      <hr class="my-1 h-px border-0 bg-gray-300" />
+
+      <CheckBox label="dialectics" tooltip="If <a>diacritic</a> characters should be matched. For example &quot;piękny&quot; would also
+        match &quot;piekny&quot; and &quot;doner&quot; would also match &quot;döner&quot;"
+        :isChecked="options.diacritics" @update:isChecked="options.diacritics = !options.diacritics" />
+      <a href="https://en.wikipedia.org/wiki/Diacritic" target="_blank" class="text-slate-400 underline text-sm"> (more
+        info about
+        diacritic)</a>
+      <CheckBox label="iframes"
+        tooltip="Whether to search also inside iframes. If you don't have permissions to some iframes they will be silently skipped."
+        :isChecked="options.iframes" @update:isChecked="options.iframes = !options.iframes" />
+      <CheckBox label="acrossElements" tooltip="Whether to search for matches across elements."
+        :isChecked="options.acrossElements" @update:isChecked="options.acrossElements = !options.acrossElements" />
+      <CheckBox label="caseSensitive" tooltip="Whether to search case sensitive" :isChecked="options.caseSensitive"
+        @update:isChecked="options.caseSensitive = !options.caseSensitive" />
+      <CheckBox label="ignoreJoiners" tooltip="Whether to search case sensitive" :isChecked="options.ignoreJoiners"
+        @update:isChecked="options.ignoreJoiners = !options.ignoreJoiners" />
+
+      <div class="block my-1">
+        <div class="inline-block text-lg text-slate-800">
+          accuracy:
+        </div>
+        <select id="accuracy"
+          class="text-slate-500 border-2 rounded-full focus:ring-0 focus:ring-offset-0 focus:ring-offset-transparent focus:ring-white focus:ring-opacity-0"
+          v-model="options.accuracy">
+          <option disabled>Default: partially</option>
           <option> partially</option>
           <option>complementary</option>
           <option>exactly</option>
         </select>
+        <ModalAboutAccuracyOption />
       </div>
-      <div class="rounded m-1">
-        <input type="checkbox" id="diacritics" v-model="options.diacritics" />
-        <label for="diacritics"> diacritics</label>
-      </div>
-      <div class="rounded m-1">
-        <input type="checkbox" id="iframes" v-model="options.iframes" />
-        <label for="iframes"> iframes</label>
-      </div>
-      <div class="rounded m-1">
-        <input type="checkbox" id="acrossElements" v-model="options.acrossElements" />
-        <label for="acrossElements"> acrossElements</label>
-      </div>
-      <div class="rounded m-1">
-        <input type="checkbox" id="caseSensitive" v-model="options.caseSensitive" />
-        <label for="caseSensitive"> caseSensitive</label>
-      </div>
-      <div class="rounded m-1">
-        <input type="checkbox" id="ignoreJoiners" v-model="options.ignoreJoiners" />
-        <label for="ignoreJoiners"> ignoreJoiners</label>
-      </div>
-      <div class="rounded m-1">
-        <input type="checkbox" id="ignorePunctuation" v-model="options.ignorePunctuation" />
-        <label for="ignorePunctuation"> ignorePunctuation</label>
-      </div>
-      <div class="rounded m-1">
-        <select id="wildcards" v-model="options.wildcards">
-          <option disabled value="">Default: disabled</option>
+
+      <div class="block my-1">
+        <div class="inline-block text-lg text-slate-800">
+          wildcards:
+        </div>
+        <select id="wildcards"
+          class="text-slate-500 border-2 rounded-full focus:ring-0 focus:ring-offset-0 focus:ring-offset-transparent focus:ring-white focus:ring-opacity-0"
+          v-model="options.wildcards">
+          <option disabled>Default: disabled</option>
           <option>disabled</option>
           <option>enabled</option>
           <option>withSpaces</option>
         </select>
+        <ModalAboutWildcardsOption />
       </div>
     </div>
 
+    <hr class="my-3 h-px border-0 bg-gray-300" />
+
     <div class="flex justify-center text-lg">
-      <button @click="resetDefaultOptions" class="rounded border-solid border-2 px-2"> reset to default</button>
+      <button @click="resetDefaultOptions" class="rounded-full border-solid border-2 px-2 text-slate-800 "> reset to
+        default</button>
     </div>
 
-
-
-    <div class="justify-center m-5 text-slate-500">
-      Detail information about option is available at&nbsp; <a
-        href="https://markjs.io/#:~:text=div.test%22).-,4.2%20mark(),-A%20method%20to" target="_blank"
-        class="underline">Here</a>.
+    <div class="justify-center text-slate-500">
+      <a href="https://markjs.io/#:~:text=div.test%22).-,4.2%20mark(),-A%20method%20to" target="_blank" class="underline">
+        <icon-help-circle class="inline-block mx-1 text-slate-400 text-sm" />
+        Detail information about option
+      </a>
     </div>
 
     <div class="flex justify-center underline m-5 text-slate-500">

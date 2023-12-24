@@ -19,6 +19,9 @@
       <button class="underline" @click="$router.back">Go Back</button>
     </div>
   </div>
+  <footer class="flex justify-center bg-gray-50">
+    This extension is made by&nbsp; <a href=" https://in-da-shell.com/" target="_blank" class="underline">ut0s</a>.
+  </footer>
 </template>
 
 <script setup lang="ts"></script>
