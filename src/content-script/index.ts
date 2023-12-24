@@ -1,5 +1,8 @@
 import * as Mark from 'mark.js';
 
+// import jquery
+import $ from 'jquery';
+
 console.log('content script loaded')
 
 // mark.js
@@ -11,11 +14,18 @@ let foundCount: number[] = [];
 // search result position
 let position: number[] = [];
 
+// options
+let options: any = {};
+// read options from storage when content script is loaded
+chrome.storage.sync.get(['options'], function (result) {
+  console.table(result.options);
+  options = result.options
+});
 
 // receive message from popup and background
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   sendResponse('content script received message')
-  // console.log('request', request)
+  console.log('request type:', request.type)
   // console.log('sender', sender)
 
   // console.log('highlights', request.highlights)
@@ -23,48 +33,74 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
   switch (request.type) {
     case "highlight": {
+      console.table(request.highlights);
       instance.unmark();
       for (let idx = 0; idx < request.highlights.length; idx++) {
         const highlight = request.highlights[idx];
-        instance.mark(highlight, {
-          // "element": "mark",
-          "className": "multiple-highlighter-" + idx.toString(),
-          // "exclude": [],
-          "separateWordSearch": false,
-          // "accuracy": "partially",
-          // "diacritics": true,
-          // "synonyms": {},
-          // "iframes": false,
-          // "iframesTimeout": 5000,
-          // "acrossElements": false,
-          // "caseSensitive": false,
-          // "ignoreJoiners": false,
-          // "ignorePunctuation": [],
-          // "wildcards": "disabled",
-          // "each": function (node) {
-          //   // node is the marked DOM element
-          // },
-          // "filter": function (textNode, foundTerm, totalCounter, counter) {
-          // textNode is the text node which contains the found term
-          // foundTerm is the found search term
-          // totalCounter is a counter indicating the total number of all marks
-          //              at the time of the function call
-          // counter is a counter indicating the number of marks for the found term
-          // },
-          // "noMatch": function (term) {
-          //   // term is the not found term
-          // },
-          "done": function (counter: number) {
-            foundCount[idx] = counter;
-            if (counter !== 0) {
-              position[idx] = 0;
-            }
-          },
-          // "debug": true,
-          // "log": window.console
-        }
-        );
+        if (options.useRegex === true) {
+          console.log("use regex", options.useRegex);
+          // Create regex
+          var flags = highlight.replace(/.*\/([gimy]*)$/, '$1');
+          var pattern = highlight.replace(new RegExp('^/(.*?)/' + flags + '$'), '$1');
+          var regex = new RegExp(pattern, flags);
 
+          instance.markRegExp(regex, {
+            // "element": "mark",
+            "className": "multiple-highlighter-" + idx.toString(),
+            // "exclude": [],
+            "iframes": options.iframes,
+            // "iframesTimeout": 5000,
+            "acrossElements": options.acrossElements,
+            "done": function (counter: number) {
+              foundCount[idx] = counter;
+              if (counter !== 0) {
+                position[idx] = 0;
+              }
+            },
+            "debug": true,
+            // "log": window.console
+          }
+          );
+        } else {
+          instance.mark(highlight, {
+            // "element": "mark",
+            "className": "multiple-highlighter-" + idx.toString(),
+            // "exclude": [],
+            "separateWordSearch": options.separateWordSearch,
+            "accuracy": options.accuracy,
+            "diacritics": options.diacritics,
+            // "synonyms": {},
+            "iframes": options.iframes,
+            // "iframesTimeout": 5000,
+            "acrossElements": options.acrossElements,
+            "caseSensitive": options.caseSensitive,
+            "ignoreJoiners": options.ignoreJoiners,
+            // "ignorePunctuation": [],
+            "wildcards": "disabled",
+            // "each": function (node) {
+            //   // node is the marked DOM element
+            // },
+            // "filter": function (textNode, foundTerm, totalCounter, counter) {
+            // textNode is the text node which contains the found term
+            // foundTerm is the found search term
+            // totalCounter is a counter indicating the total number of all marks
+            //              at the time of the function call
+            // counter is a counter indicating the number of marks for the found term
+            // },
+            // "noMatch": function (term) {
+            //   // term is the not found term
+            // },
+            "done": function (counter: number) {
+              foundCount[idx] = counter;
+              if (counter !== 0) {
+                position[idx] = 0;
+              }
+            },
+            // "debug": true,
+            // "log": window.console
+          }
+          );
+        }
         console.table({ foundCount })
 
         // send search result to sidepanel
@@ -73,6 +109,18 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
           position: position,
         });
 
+        // add css
+        const color = request.colorPalate[idx];
+        $('mark.multiple-highlighter-' + idx).css('background', color);
+        console.log("colorPalate", color)
+      }
+      break;
+    }
+    case "changeColor": {
+      for (let idx = 0; idx < request.colorPalate.length; idx++) {
+        const color = request.colorPalate[idx];
+        $('mark.multiple-highlighter-' + idx).css('background', color);
+        console.log("colorPalate", color)
       }
       break;
     }
@@ -119,8 +167,15 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       position = [];
       break;
     }
+    case "options": {
+      // get latest options from storage
+      chrome.storage.sync.get(['options'], function (result) {
+        console.table(result.options);
+        options = result.options
+      });
+      break;
+    }
     default:
       break;
   }
-
 });
