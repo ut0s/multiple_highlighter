@@ -1,5 +1,8 @@
 import * as Mark from 'mark.js';
 
+// import jquery
+import $ from 'jquery';
+
 console.log('content script loaded')
 
 // mark.js
@@ -106,6 +109,18 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
           position: position,
         });
 
+        // add css
+        const color = request.colorPalate[idx];
+        $('mark.multiple-highlighter-' + idx).css('background', color);
+        console.log("colorPalate", color)
+      }
+      break;
+    }
+    case "changeColor": {
+      for (let idx = 0; idx < request.colorPalate.length; idx++) {
+        const color = request.colorPalate[idx];
+        $('mark.multiple-highlighter-' + idx).css('background', color);
+        console.log("colorPalate", color)
       }
       break;
     }
@@ -163,5 +178,4 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     default:
       break;
   }
-
 });

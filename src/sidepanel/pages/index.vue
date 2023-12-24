@@ -8,20 +8,30 @@ import IconMinusCircle from '~icons/mdi/minus-circle'
 import IconDotsVerticalCircle from '~icons/mdi/dots-vertical-circle'
 // mdi: circle - half - full
 
+const defaultHighlightColor = '#ffff00';
+
 // v-medel for input texts
 const highlights = ref(['']); // v-model
 const foundCount = ref(['']); // v-model
 const position = ref(['']); // v-model
+const colorPalate = ref(['']); // v-model
 
 // watch highlight array change and send message to content script
 watch(highlights, (value) => {
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     chrome.tabs.sendMessage(tabs[0].id, {
       type: 'highlight',
-      highlights: value
+      highlights: value,
+      colorPalate: colorPalate.value
     });
   });
   console.log('highlight', value);
+
+  // if highlight length is not equal to colorPalate length, add color to colorPalate
+  if (value.length > colorPalate.value.length) {
+    console.table(colorPalate.value);
+    colorPalate.value.push(defaultHighlightColor);
+  }
 }, { deep: true });
 
 // get highlight found counts from content script
@@ -36,8 +46,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   console.table(foundCount.value);
   console.table(position.value);
 });
-
-
 
 // move class multiple-highlighter-[idx] in page
 function moveUp(idx: any) {
@@ -83,6 +91,43 @@ function clear() {
     });
   });
 }
+
+// load colorPalate from chrome storage
+chrome.storage.sync.get('colorPalate', (data) => {
+  console.table(data.colorPalate);
+  if (data.colorPalate) {
+    colorPalate.value = data.colorPalate;
+  } else {
+    colorPalate.value = [defaultHighlightColor];
+  }
+  console.table(colorPalate.value);
+  console.log('colorPalate loaded from onMounted');
+});
+
+// watch colorPalate array change and send message to content script
+watch(colorPalate, (value) => {
+  console.table(value);
+  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+    chrome.tabs.sendMessage(tabs[0].id, {
+      type: 'changeColor',
+      colorPalate: value
+    });
+    // force re-highlight
+    chrome.tabs.sendMessage(tabs[0].id, {
+      type: 'highlight',
+      highlights: highlights.value,
+      colorPalate: value
+    });
+  });
+
+  // save to chrome storage
+  chrome.storage.sync.set({ colorPalate: value }, () => {
+    console.table(value);
+    console.log('colorPalate saved from watch');
+  });
+}, { deep: true });
+
+
 </script>
 
 <template>
@@ -99,6 +144,10 @@ function clear() {
     <div v-for="(highlight, index) in              highlights             " :key="index"
       class="flex border rounded m-1 divide-x">
       <div class="flex grow">
+        <div>
+          <input type="color" v-model="colorPalate[index]" class="w-4"
+            v-tooltip="{ content: 'Change highlight color' }" />
+        </div>
         <input v-model="highlights[index]" type="" class="text-slate-500 dark:text-slate-400 rounded grow"
           placeholder="  highlight text" @blur="highlights.push('')" />
         <div v-if="highlight && Number(foundCount[index]) != 0" class="flex text-base mx-1 text-slate-400">
@@ -125,7 +174,7 @@ function clear() {
     </div>
 
     <div class="flex justify-center underline m-5 text-slate-500">
-      <RouterLink to="/about" v-tooltip="{ content: 'README' }"> by ut0s </RouterLink>
+      <RouterLink to="/about" v-tooltip="{ content: 'README (How to use)' }"> README </RouterLink>
     </div>
   </div>
 </template>
