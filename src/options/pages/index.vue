@@ -154,7 +154,8 @@ onMounted(() => {
   </div>
 
   <footer class="flex justify-center bg-gray-50">
-    This extension is made by&nbsp; <a href=" https://in-da-shell.com/" target="_blank" class="underline">ut0s</a>.
+    This extension is made by&nbsp; <RouterLink to="/about" class="underline"> ut0s
+    </RouterLink>.
   </footer>
 </template>
 
