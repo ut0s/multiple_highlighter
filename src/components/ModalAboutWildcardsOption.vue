@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import IconHelpCircle from '~icons/mdi/help-circle'
 import IconCloseCircle from '~icons/mdi/close-circle'
 
-const isOpen = ref(true);
+const isOpen = ref(false);
 </script>
 
 <template>
