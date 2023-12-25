@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import BuyMeACoffee from '~/Components/BuyMeACoffee.vue'
-import KoFi from '~/Components/Kofi.vue'
+import BuyMeACoffee from '~/Components/BuyMeACoffee.vue';
+import KoFi from '~/Components/Kofi.vue';
+import GithubSponsor from '~/components/GithubSponsor.vue';
 </script>
 
 <template>
@@ -20,11 +21,15 @@ import KoFi from '~/Components/Kofi.vue'
       This extension is made by <a href="https://in-da-shell.com/" target="_blank" class="underline">ut0s</a>.
     </span>
 
+    <div class="flex justify-center my-10"> </div>
     <div class="flex justify-center my-2">
       <BuyMeACoffee />
     </div>
     <div class="flex justify-center my-2">
       <Kofi />
+    </div>
+    <div class="flex justify-center my-2">
+      <GithubSponsor />
     </div>
 
     <div class="flex justify-center underline m-5 text-slate-500">
