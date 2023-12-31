@@ -151,55 +151,53 @@ function resetToDefaultColorPalate() {
 </script>
 
 <template>
-  <div class="bg-white dark:bg-slate-800">
-    <div class="flex">
-      <div class="text-2xl text-slate-700">
-        <icon-delete-circle v-tooltip="{ content: 'Reset highlight color to default' }"
-          @click="resetToDefaultColorPalate()" />
-      </div>
-      <div class="grow"></div>
-      <div class="text-2xl text-slate-700">
-        <RouterLink to="/options" v-tooltip="{ content: 'Open option page' }">
-          <icon-dots-vertical-circle />
-        </RouterLink>
-      </div>
+  <div class="flex">
+    <div class="text-2xl text-slate-500">
+      <icon-delete-circle v-tooltip="{ content: 'Reset highlight color to default' }"
+        @click="resetToDefaultColorPalate()" />
     </div>
+    <div class="grow"></div>
+    <div class="text-2xl text-slate-500">
+      <RouterLink to="/options" v-tooltip="{ content: 'Open option page' }">
+        <icon-dots-vertical-circle />
+      </RouterLink>
+    </div>
+  </div>
 
-    <div v-for="(highlight, index) in              highlights             " :key="index"
-      class="flex border rounded m-1 divide-x">
-      <div class="flex grow">
-        <div>
-          <input type="color" v-model="colorPalate[index]" class="w-4"
-            v-tooltip="{ content: 'Change highlight color' }" />
-        </div>
-        <input v-model="highlights[index]" type="" class="text-slate-500 dark:text-slate-400 rounded grow"
-          placeholder="  highlight text" @blur="highlights.push('')" />
-        <div v-if="highlight && Number(foundCount[index]) != 0" class="flex text-base mx-1 text-slate-400">
-          {{ position[index] + 1 }} / {{ foundCount[index] }}
-        </div>
-        <div v-else-if="highlight && Number(foundCount[index]) == 0" class="flex text-base mx-1 text-slate-400 ">
-          {{ position[index] }} / {{ foundCount[index] }}
-        </div>
+  <div v-for="(highlight, index) in              highlights             " :key="index"
+    class="flex border rounded m-1 divide-x">
+    <div class="flex grow">
+      <div>
+        <input type="color" v-model="colorPalate[index]" class="w-4 h-full bg-white"
+          v-tooltip="{ content: 'Change highlight color' }" />
       </div>
-      <div class="flex text-2xl text-slate-700">
-        <icon-chevron-up-circle v-tooltip="{ content: 'Previous' }" @click="moveDown(index)" />
-        <icon-chevron-down-circle v-tooltip="{ content: 'Next' }" @click="moveUp(index)" />
-        <div v-if="index != 0">
-          <icon-minus-circle v-tooltip="{ content: 'Remove this text' }" @click="remove(index)" />
-        </div>
-        <div v-else>
-          <icon-minus-circle class="invisible" />
-        </div>
+      <input v-model="highlights[index]" type="" class="grow text-slate-500 dark:text-slate-400 bg-white"
+        placeholder="  highlight text" @blur="highlights.push('')" />
+      <div v-if="highlight && Number(foundCount[index]) != 0" class="flex text-base px-1 text-slate-400 bg-white">
+        {{ position[index] + 1 }} / {{ foundCount[index] }}
+      </div>
+      <div v-else-if="highlight && Number(foundCount[index]) == 0" class="flex text-base px-1 text-slate-400 bg-white">
+        {{ position[index] }} / {{ foundCount[index] }}
       </div>
     </div>
-    <div class="flex justify-center mx-5 text-2xl text-slate-700">
-      <icon-plus-circle class="m-1" v-tooltip="{ content: 'Add text box' }" @click="highlights.push('')" />
-      <icon-minus-circle-multiple class="m-1" v-tooltip="{ content: 'Clear all highlights' }" @click="clear()" />
+    <div class="flex text-2xl text-slate-500 bg-white">
+      <icon-chevron-up-circle v-tooltip="{ content: 'Previous' }" @click="moveDown(index)" />
+      <icon-chevron-down-circle v-tooltip="{ content: 'Next' }" @click="moveUp(index)" />
+      <div v-if="index != 0">
+        <icon-minus-circle v-tooltip="{ content: 'Remove this text' }" @click="remove(index)" />
+      </div>
+      <div v-else>
+        <icon-minus-circle class="invisible" />
+      </div>
     </div>
+  </div>
+  <div class="flex justify-center mx-5 text-2xl text-slate-500">
+    <icon-plus-circle class="m-1" v-tooltip="{ content: 'Add text box' }" @click="highlights.push('')" />
+    <icon-minus-circle-multiple class="m-1" v-tooltip="{ content: 'Clear all highlights' }" @click="clear()" />
+  </div>
 
-    <div class="flex justify-center underline m-5 text-slate-500">
-      <RouterLink to="/about" v-tooltip="{ content: 'README (How to use)' }"> README </RouterLink>
-    </div>
+  <div class="flex justify-center underline m-5 text-slate-500">
+    <RouterLink to="/about" v-tooltip="{ content: 'README (How to use)' }"> README </RouterLink>
   </div>
 </template>
 
