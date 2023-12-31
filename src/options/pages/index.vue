@@ -69,7 +69,7 @@ onMounted(() => {
 <template>
   <div class="text-center m-4 grow">
     <div class="flex justify-center">
-      <div class="text-2xl text-slate-700">
+      <div class="text-2xl text-slate-500">
         <icon-dots-vertical-circle />
       </div>
       <h1 class="text-lg font-bold underline decoration-[0.5rem] decoration-green-300 pb-6">
@@ -104,7 +104,7 @@ onMounted(() => {
         @update:isChecked="options.ignoreJoiners = !options.ignoreJoiners" />
 
       <div class="block my-1">
-        <div class="inline-block text-lg text-slate-800">
+        <div class="inline-block text-lg text-slate-800 dark:text-slate-400">
           accuracy:
         </div>
         <select id="accuracy"
@@ -119,7 +119,7 @@ onMounted(() => {
       </div>
 
       <div class="block my-1">
-        <div class="inline-block text-lg text-slate-800">
+        <div class="inline-block text-lg text-slate-800 dark:text-slate-400">
           wildcards:
         </div>
         <select id="wildcards"
@@ -136,8 +136,9 @@ onMounted(() => {
 
     <hr class="my-3 h-px border-0 bg-gray-300" />
 
-    <div class="flex justify-center text-lg">
-      <button @click="resetDefaultOptions" class="rounded-full border-solid border-2 px-2 text-slate-800 "> reset to
+    <div class="flex justify-center text-lg dark:text-slate-400">
+      <button @click="resetDefaultOptions"
+        class="rounded-full border-solid border-2 px-2 text-slate-800 dark:text-slate-400"> reset to
         default</button>
     </div>
 
@@ -153,7 +154,7 @@ onMounted(() => {
     </div>
   </div>
 
-  <footer class="flex justify-center bg-gray-50">
+  <footer class="flex justify-center text-slate-500">
     This extension is made by&nbsp; <RouterLink to="/about" class="underline"> ut0s
     </RouterLink>.
   </footer>

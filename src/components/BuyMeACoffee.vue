@@ -4,7 +4,8 @@
 <template>
   <div class="block">
     <a target="_blank" href="https://www.buymeacoffee.com/ut0s">
-      <button class="flex flex-row rounded-3xl p-2 bg-green-300 text-white">
+      <button
+        class="flex flex-row rounded-3xl p-2 bg-green-300 text-white shadow-md dark:border-slate-400 dark:shadow-slate-400">
         <div class="flex w-2"></div>
         <div class="flex">
           <span class="flex">
