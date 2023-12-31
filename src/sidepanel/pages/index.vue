@@ -30,6 +30,8 @@ const colorPalate = ref(['']); // v-model
 
 // watch highlight array change and send message to content script
 watch(highlights, (value) => {
+  shrink_highlights();
+
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     chrome.tabs.sendMessage(tabs[0].id, {
       type: 'highlight',
@@ -90,6 +92,16 @@ function remove(index: any) {
       position: position.value
     });
   });
+}
+
+// shrink highlight array to remove extra empty string
+function shrink_highlights() {
+  while (highlights.value[highlights.value.length - 1] == '') {
+    highlights.value.pop();
+  }
+
+  // last element must be empty string
+  highlights.value.push('');
 }
 
 // clear result
@@ -172,7 +184,7 @@ function resetToDefaultColorPalate() {
           v-tooltip="{ content: 'Change highlight color' }" />
       </div>
       <input v-model="highlights[index]" type="" class="grow text-slate-500 dark:text-slate-400 bg-white"
-        placeholder="  highlight text" @blur="highlights.push('')" />
+        placeholder="  highlight text" @blur="highlights.push('')" @keydown.enter="highlights.push('')" />
       <div v-if="highlight && Number(foundCount[index]) != 0" class="flex text-base px-1 text-slate-400 bg-white">
         {{ position[index] + 1 }} / {{ foundCount[index] }}
       </div>
