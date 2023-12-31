@@ -5,15 +5,15 @@ import GithubSponsor from '~/components/GithubSponsor.vue';
 </script>
 
 <template>
-  <div class="m-4">
+  <div class="m-4 ">
     <div class="flex justify-center">
       <div class="mx-1">
         <img src="/icons/icon.png" alt="" width="24px">
       </div>
-      <h1 class="text-xl font-bold underline decoration-[0.5rem] decoration-green-300 pb-6">Multile Highlighter </h1>
+      <h1 class="text-xl font-bold  underline decoration-[0.5rem] decoration-green-300 pb-6">Multile Highlighter </h1>
     </div>
 
-    <span>
+    <span class="dark:text-slate-500">
       Unlike the regular 'Find in page' in Chome, this extension can
       <li>search for multiple words at the same time. </li>
       <li>can use regex/wildcard</li>
@@ -36,7 +36,7 @@ import GithubSponsor from '~/components/GithubSponsor.vue';
       <button class="underline" @click="$router.back">Go Back</button>
     </div>
   </div>
-  <footer class="flex justify-center bg-gray-50">
+  <footer class="flex justify-center dark:text-slate-500">
     This extension is made by&nbsp; <a href=" https://in-da-shell.com/" target="_blank" class="underline">ut0s</a>.
   </footer>
 </template>
