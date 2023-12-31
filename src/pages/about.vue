@@ -32,6 +32,8 @@ import GithubSponsor from '~/components/GithubSponsor.vue';
       <GithubSponsor />
     </div>
 
+    <FeatureRequestBugReport class="flex justify-center" />
+
     <div class="flex justify-center underline m-5 text-slate-500">
       <button class="underline" @click="$router.back">Go Back</button>
     </div>

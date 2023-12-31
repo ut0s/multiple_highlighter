@@ -7,6 +7,7 @@ import _ from 'lodash';
 import CheckBox from '~/Components/CheckBox.vue'
 import ModalAboutAccuracyOption from '~/Components/ModalAboutAccuracyOption.vue'
 import ModalAboutWildcardsOption from '~/Components/ModalAboutWildcardsOption.vue'
+import FeatureRequestBugReport from '~/components/FeatureRequestBugReport.vue';
 
 const defaultOptions = {
   useRegex: false,
@@ -136,7 +137,7 @@ onMounted(() => {
 
     <hr class="my-3 h-px border-0 bg-gray-300" />
 
-    <div class="flex justify-center text-lg dark:text-slate-400">
+    <div class="flex justify-center mb-3 text-lg dark:text-slate-400">
       <button @click="resetDefaultOptions"
         class="rounded-full border-solid border-2 px-2 text-slate-800 dark:text-slate-400"> reset to
         default</button>
@@ -148,6 +149,8 @@ onMounted(() => {
         Detail information about option
       </a>
     </div>
+
+    <FeatureRequestBugReport />
 
     <div class="flex justify-center underline m-5 text-slate-500">
       <button class="underline" @click="$router.back">Go Back</button>
