@@ -14,4 +14,7 @@ chrome.tabs.onUpdated.addListener(async (tabId, info, tab) => {
   });
 });
 
+// when uninstall extension, open a survey form
+chrome.runtime.setUninstallURL('https://forms.gle/AyA2n8ygc2WtoXqB6')
+
 export { }
