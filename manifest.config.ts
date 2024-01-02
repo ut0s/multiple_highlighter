@@ -18,6 +18,7 @@ export default defineManifest(async (env) => ({
   // semver is OK in "version_name"
   version_name: version,
   manifest_version: 3,
+  minimum_chrome_version: "116",
   icons: {
     "16": "icons/icon16.png",
     "32": "icons/icon32.png",
