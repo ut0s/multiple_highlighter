@@ -134,10 +134,17 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       }
       console.log("pos", position[idx])
       const elements = document.querySelectorAll("mark.multiple-highlighter-" + idx.toString());
-      // console.log("elements", elements)
-      console.log("elements[idx]", elements[idx])
-      // TODO: make element visible
-      elements[position[idx]].scrollIntoView({
+      const element = elements[position[idx]];
+      let parentElement = element.parentElement;
+      while (parentElement) {
+        if (parentElement.getAttribute("class") && parentElement.getAttribute("class")?.includes("collapse")) {
+          console.debug("found collapse element", parentElement)
+          parentElement.setAttribute("class", "collapse show");
+        }
+        parentElement = parentElement.parentElement;
+      }
+
+      element.scrollIntoView({
         behavior: 'auto',
         block: 'center',
         inline: 'center',
