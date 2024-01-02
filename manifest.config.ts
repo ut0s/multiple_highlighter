@@ -11,7 +11,7 @@ const [major, minor, patch, label = '0'] = version
   .split(/[.-]/)
 
 export default defineManifest(async (env) => ({
-  name: env.mode === 'development' ? `[INTERNAL] ${name}` : name,
+  name: env.mode === 'development' ? `[INTERNAL] ${name}` : name.replace("_", " "),
   description: 'multiple highlighter with side panel',
   // up to four numbers separated by dots
   version: `${major}.${minor}.${patch}.${label}`,
@@ -26,7 +26,7 @@ export default defineManifest(async (env) => ({
     "128": "icons/icon128.png"
   },
   action: {
-    default_popup: 'src/popup/index.html',
+    "default_title": name.replace("_", " "),
   },
   background: {
     service_worker: 'src/background/index.ts',
