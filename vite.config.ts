@@ -37,10 +37,6 @@ export default defineConfig({
           baseRoute: 'popup',
         },
         {
-          dir: 'src/content-script/iframe/pages',
-          baseRoute: 'iframe',
-        },
-        {
           dir: 'src/sidepanel/pages',
           baseRoute: 'sidepanel',
         },
@@ -86,13 +82,7 @@ export default defineConfig({
       },
     },
   ],
-  build: {
-    rollupOptions: {
-      input: {
-        iframe: 'src/content-script/iframe/index.html',
-      },
-    },
-  },
+  // esbuild: {
   server: {
     port: 8888,
     strictPort: true,

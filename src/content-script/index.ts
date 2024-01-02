@@ -1,4 +1,4 @@
-import * as Mark from 'mark.js';
+import Mark from 'mark.js';
 
 // import jquery
 import $ from 'jquery';
@@ -6,7 +6,7 @@ import $ from 'jquery';
 console.log('content script loaded')
 
 // mark.js
-const instance = new Mark(document.querySelector("body"));
+const instance = new Mark(document.body);
 
 // search result count
 let foundCount: number[] = [];
