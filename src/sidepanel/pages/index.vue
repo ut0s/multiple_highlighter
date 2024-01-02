@@ -30,9 +30,8 @@ const colorPalate = ref(['']); // v-model
 
 // watch highlight array change and send message to content script
 watch(highlights, (value) => {
-  shrink_highlights();
-
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+    console.log("tab:", tabs)
     chrome.tabs.sendMessage(tabs[0].id, {
       type: 'highlight',
       highlights: value,
@@ -184,7 +183,7 @@ function resetToDefaultColorPalate() {
           v-tooltip="{ content: 'Change highlight color' }" />
       </div>
       <input v-model="highlights[index]" type="" class="grow text-slate-500 dark:text-slate-400 bg-white"
-        placeholder="  highlight text" @blur="highlights.push('')" @keydown.enter="highlights.push('')" />
+        placeholder="  highlight text" @blur="shrink_highlights()" @keydown.enter="shrink_highlights()" />
       <div v-if="highlight && Number(foundCount[index]) != 0" class="flex text-base px-1 text-slate-400 bg-white">
         {{ position[index] + 1 }} / {{ foundCount[index] }}
       </div>
@@ -204,7 +203,7 @@ function resetToDefaultColorPalate() {
     </div>
   </div>
   <div class="flex justify-center mx-5 text-2xl text-slate-500">
-    <icon-plus-circle class="m-1" v-tooltip="{ content: 'Add text box' }" @click="highlights.push('')" />
+    <icon-plus-circle class="m-1" v-tooltip="{ content: 'Add text box' }" @click="shrink_highlights()" />
     <icon-minus-circle-multiple class="m-1" v-tooltip="{ content: 'Clear all highlights' }" @click="clear()" />
   </div>
 
