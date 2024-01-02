@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import BuyMeACoffee from '~/Components/BuyMeACoffee.vue';
-import KoFi from '~/Components/Kofi.vue';
+import BuyMeACoffee from '~/components/BuyMeACoffee.vue';
+import Kofi from '~/components/Kofi.vue';
 import GithubSponsor from '~/components/GithubSponsor.vue';
 </script>
 
@@ -10,11 +10,11 @@ import GithubSponsor from '~/components/GithubSponsor.vue';
       <div class="mx-1">
         <img src="/icons/icon.png" alt="" width="24px">
       </div>
-      <h1 class="text-xl font-bold  underline decoration-[0.5rem] decoration-green-300 pb-6">Multile Highlighter </h1>
+      <h1 class="text-xl font-bold  underline decoration-[0.5rem] decoration-green-300 pb-6">Multiple Highlighter </h1>
     </div>
 
     <span class="dark:text-slate-500">
-      Unlike the regular 'Find in page' in Chome, this extension can
+      Unlike the regular 'Find in page' in Chrome, this extension can
       <li>search for multiple words at the same time. </li>
       <li>can use regex/wildcard</li>
       <li>can change highlight color</li>
