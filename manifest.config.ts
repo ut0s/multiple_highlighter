@@ -33,15 +33,15 @@ export default defineManifest(async (env) => ({
   },
   content_scripts: [
     {
-      all_frames: false,
+      all_frames: true,
       js: ['src/content-script/index.ts'],
       matches: ['*://*/*'],
       run_at: 'document_end',
     },
   ],
-  side_panel: {
-    default_path: "src/sidepanel/index.html",
-  },
+  // side_panel: {
+  //   default_path: "src/sidepanel/index.html",
+  // },
   host_permissions: ['*://*/*'],
   // options_page: 'src/options/index.html',
   permissions: ['activeTab', 'sidePanel', 'storage', 'contextMenus'],
