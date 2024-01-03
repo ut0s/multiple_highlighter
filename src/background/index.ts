@@ -83,4 +83,7 @@ async function toggleSidePanel(tabId: number) {
   });
 }
 
+// when uninstall extension, open a survey form
+chrome.runtime.setUninstallURL('https://forms.gle/AyA2n8ygc2WtoXqB6')
+
 export { }
