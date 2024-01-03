@@ -150,6 +150,11 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         inline: 'center',
       });
 
+      // remove border for previous position
+      $('mark.multiple-highlighter-' + idx).css('border', 'none');
+      // with border for position
+      element.setAttribute("style", "border: 2px solid red;");
+
       position[idx] += foundCount[idx]
       if (request.type === "moveUp") {
         position[idx] += 1
