@@ -48,16 +48,29 @@ watch(highlights, (value) => {
 }, { deep: true });
 
 // get highlight found counts from content script
+// add selected text to highlight array
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  console.log('received request:', request);
+  console.log('received sender:', sender);
+  // console.log('received sendResponse:', sendResponse);
+
   if (request.foundCount !== undefined) {
     foundCount.value = request.foundCount;
+    console.table(foundCount.value);
   }
   if (request.position !== undefined) {
     position.value = request.position;
+    console.table(position.value);
   }
-
-  console.table(foundCount.value);
-  console.table(position.value);
+  if (request.findSelectedText !== undefined) {
+    console.log('received findSelectedText:', request.findSelectedText);
+    // shrink and insert selected text
+    while (highlights.value[highlights.value.length - 1] == '') {
+      highlights.value.pop();
+    }
+    highlights.value.push(request.findSelectedText);
+    highlights.value.push('');
+  }
 });
 
 // move class multiple-highlighter-[idx] in page

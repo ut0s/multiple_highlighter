@@ -7,13 +7,23 @@ chrome.runtime.onInstalled.addListener(async () => {
     contexts: ['page']
   });
 
+  chrome.contextMenus.create({
+    id: 'findSelectedText',
+    title: ' Add selected text to multiple highlighter',
+    contexts: ['selection']
   });
 });
 
-// Allows users to open the side panel by clicking on the action toolbar icon
-chrome.sidePanel
-  .setPanelBehavior({ openPanelOnActionClick: true })
-  .catch((error) => console.error(error));
+// update context menu by selected text
+chrome.contextMenus.onClicked.addListener(async (info, tab) => {
+  console.log("contextMenus.onClicked:", info, tab)
+
+  if (info.selectionText) {
+    chrome.contextMenus.update('findSelectedText', {
+      title: ' Add "' + info.selectionText + '" to multiple highlighter',
+    });
+  }
+});
 
 // open side panel on the current tab from context menu
 chrome.contextMenus.onClicked.addListener(async (info, tab) => {
@@ -23,6 +33,8 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
     toggleSidePanel(tab?.id);
   }
 
+  if (info.menuItemId === 'findSelectedText') {
+    console.log("findSelectedText", info.selectionText)
 
     // open side panel on the current tab
     chrome.sidePanel.setOptions({
@@ -30,11 +42,17 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
       path: 'src/sidepanel/index.html',
       enabled: true
     });
-    await chrome.sidePanel.open({
+    chrome.sidePanel.open({
       tabId: tab?.id,
+    });
+
+    // send selected text to sidepanel
+    chrome.runtime.sendMessage({
+      findSelectedText: info.selectionText,
     });
   }
 });
+
 // open side panel on the current tab from toolbar icon
 chrome.action.onClicked.addListener(async (tab) => {
   console.log("action.onClicked:", tab)
