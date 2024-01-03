@@ -195,8 +195,8 @@ function resetToDefaultColorPalate() {
         <input type="color" v-model="colorPalate[index]" class="w-4 h-full bg-white"
           v-tooltip="{ content: 'Change highlight color' }" />
       </div>
-      <input v-model="highlights[index]" type="" class="grow text-slate-500 dark:text-slate-400 bg-white"
-        placeholder="  highlight text" @blur="shrink_highlights()" @keydown.enter="shrink_highlights()" />
+      <input v-model="highlights[index]" type="" class="grow  text-slate-800 bg-white" placeholder="  highlight text"
+        @blur="shrink_highlights()" @keydown.enter="shrink_highlights()" />
       <div v-if="highlight && Number(foundCount[index]) != 0" class="flex text-base px-1 text-slate-400 bg-white">
         {{ position[index] + 1 }} / {{ foundCount[index] }}
       </div>
