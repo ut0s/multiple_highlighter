@@ -82,6 +82,13 @@ export default defineConfig({
       },
     },
   ],
+  build: {
+    rollupOptions: {
+      input: {
+        sidepanel: resolve(__dirname, 'src/sidepanel/index.html'),
+      },
+    },
+  },
   // esbuild: {
   server: {
     port: 8888,
