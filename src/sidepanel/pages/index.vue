@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import _ from 'lodash';
-import IconMinusCircleMultiple from '~icons/mdi/minus-circle-multiple'
+import IconRefreshCircle from '~icons/mdi/refresh-circle'
 import IconChevronUpCircle from '~icons/mdi/chevron-up-circle'
 import IconChevronDownCircle from '~icons/mdi/chevron-down-circle'
 import IconPlusCircle from '~icons/mdi/plus-circle'
@@ -177,7 +177,7 @@ function resetToDefaultColorPalate() {
 <template>
   <div class="flex">
     <div class="text-2xl text-slate-500">
-      <icon-delete-circle v-tooltip="{ content: 'Reset highlight color to default' }"
+      <icon-refresh-circle v-tooltip="{ content: 'Reset highlight color to default' }"
         @click="resetToDefaultColorPalate()" />
     </div>
     <div class="grow"></div>
@@ -217,7 +217,7 @@ function resetToDefaultColorPalate() {
   </div>
   <div class="flex justify-center mx-5 text-2xl text-slate-500">
     <icon-plus-circle class="m-1" v-tooltip="{ content: 'Add text box' }" @click="shrink_highlights()" />
-    <icon-minus-circle-multiple class="m-1" v-tooltip="{ content: 'Clear all highlights' }" @click="clear()" />
+    <icon-delete-circle class="m-1" v-tooltip="{ content: 'Clear all highlights' }" @click="clear()" />
   </div>
 
   <div class="flex justify-center underline m-5 text-slate-500">
