@@ -1,5 +1,7 @@
 console.log('hello world from background')
 
+const WAIT_FOR_SIDE_PANEL_TO_BE_READY_MS = 100
+
 chrome.runtime.onInstalled.addListener(async () => {
   chrome.contextMenus.create({
     id: 'toggleSidePanel',
@@ -26,7 +28,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       () => {
         console.log("context menu updated")
       });
-
   }
 });
 
@@ -57,6 +58,8 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
       tabId: tab?.id,
     });
 
+    // wait for side panel to be ready
+    await new Promise(resolve => setTimeout(resolve, WAIT_FOR_SIDE_PANEL_TO_BE_READY_MS));
     // send selected text to sidepanel
     chrome.runtime.sendMessage({
       findSelectedText: info.selectionText,
