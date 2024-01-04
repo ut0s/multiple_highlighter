@@ -1,7 +1,6 @@
 import Mark from 'mark.js';
-
-// import jquery
 import $ from 'jquery';
+import _ from 'lodash';
 
 console.log('content script loaded')
 
@@ -112,6 +111,19 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         // add css
         const color = request.colorPalate[idx];
         $('mark.multiple-highlighter-' + idx).css('background', color);
+        // if inside textarea, add css
+        console.log("inside t extareas: ", $("textarea mark.multiple-highlighter-" + idx).length)
+
+        // $("textarea mark.multiple-highlighter-" + idx).each(function () {
+        //   $(this).highlightWithinTextarea({
+        //     highlight: highlight,
+        //   });
+        // }
+        // );
+        // $('textarea').highlightWithinTextarea({
+        //   highlight: 'license'
+        // });
+
         console.log("colorPalate", color)
       }
       break;
@@ -192,6 +204,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   }
 });
 
+const MAX_SELECTION_LENGTH = 50;
 
 // update context menu by selected text
 document.onselectionchange = () => {
@@ -202,7 +215,8 @@ document.onselectionchange = () => {
   if (selectedText.length > 0) {
     // send selected text to background
     chrome.runtime.sendMessage({
-      selectedText: selectedText,
+      selectedText: _.truncate(selectedText,
+        { length: MAX_SELECTION_LENGTH, omission: '...' }),
     });
   }
 };
