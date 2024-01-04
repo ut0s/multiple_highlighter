@@ -14,16 +14,22 @@ chrome.runtime.onInstalled.addListener(async () => {
   });
 });
 
-// update context menu by selected text
-chrome.contextMenus.onClicked.addListener(async (info, tab) => {
-  console.log("contextMenus.onClicked:", info, tab)
+// update context menu by received selected text
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  console.log("runtime.onMessage:", request, sender, sendResponse)
 
-  if (info.selectionText) {
-    chrome.contextMenus.update('findSelectedText', {
-      title: ' Add "' + info.selectionText + '" to multiple highlighter',
-    });
+  if (request.selectedText) {
+    chrome.contextMenus.update('findSelectedText',
+      {
+        title: ' Add "' + request.selectedText + '" to multiple highlighter',
+      },
+      () => {
+        console.log("context menu updated")
+      });
+
   }
 });
+
 
 // open side panel on the current tab from context menu
 chrome.contextMenus.onClicked.addListener(async (info, tab) => {
@@ -31,6 +37,11 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
 
   if (info.menuItemId === 'toggleSidePanel') {
     toggleSidePanel(tab?.id);
+
+    // reset to default context menu
+    chrome.contextMenus.update('findSelectedText', {
+      title: ' Add selected text to multiple highlighter',
+    });
   }
 
   if (info.menuItemId === 'findSelectedText') {

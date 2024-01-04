@@ -191,3 +191,18 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       break;
   }
 });
+
+
+// update context menu by selected text
+document.onselectionchange = () => {
+  const selection = document.getSelection();
+  const selectedText = selection ? selection.toString() : '';
+  console.log(selectedText);
+
+  if (selectedText.length > 0) {
+    // send selected text to background
+    chrome.runtime.sendMessage({
+      selectedText: selectedText,
+    });
+  }
+};
