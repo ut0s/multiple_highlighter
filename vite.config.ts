@@ -10,7 +10,7 @@ import Pages from 'vite-plugin-pages'
 import manifest from './manifest.config'
 
 // https://vitejs.dev/config/
-export default defineConfig({
+export default defineConfig(({ command }) => ({
   resolve: {
     alias: {
       '~': resolve(join(__dirname, 'src')),
@@ -89,7 +89,9 @@ export default defineConfig({
       },
     },
   },
-  // esbuild: {
+  esbuild: {
+    drop: command === 'build' ? ['console', 'debugger'] : [],
+  },
   server: {
     port: 8888,
     strictPort: true,
@@ -103,3 +105,4 @@ export default defineConfig({
     exclude: ['vue-demi'],
   },
 })
+);
