@@ -71,6 +71,13 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     highlights.value.push(request.findSelectedText);
     highlights.value.push('');
   }
+
+  // re-highlight when page is load or reloaded
+  if (request.command == 're-highlight') {
+    console.log('received re-highlight command');
+    // touch highlights.value to trigger watch
+    shrink_highlights();
+  }
 });
 
 // move class multiple-highlighter-[idx] in page
