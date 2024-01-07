@@ -117,7 +117,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         const color = request.colorPalate[idx];
         $('mark.multiple-highlighter-' + idx).css('background', color);
         // if inside textarea, add css
-        console.log("inside t extareas: ", $("textarea mark.multiple-highlighter-" + idx).length)
+        console.log("inside textareas: ", $("textarea mark.multiple-highlighter-" + idx).length)
 
         // $("textarea mark.multiple-highlighter-" + idx).each(function () {
         //   $(this).highlightWithinTextarea({

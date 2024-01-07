@@ -1,4 +1,4 @@
-console.log('hello world from background')
+console.log('background script loaded')
 
 const WAIT_FOR_SIDE_PANEL_TO_BE_READY_MS = 100
 
