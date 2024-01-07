@@ -1,6 +1,8 @@
 console.log('background script loaded')
 
-const WAIT_FOR_SIDE_PANEL_TO_BE_READY_MS = 100
+const WAIT_FOR_SIDE_PANEL_TO_BE_READY_MS = 800
+
+const tabIds = new Set<number>();
 
 chrome.runtime.onInstalled.addListener(async () => {
   chrome.contextMenus.create({
@@ -18,7 +20,7 @@ chrome.runtime.onInstalled.addListener(async () => {
 
 // update context menu by received selected text
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  console.log("runtime.onMessage:", request, sender, sendResponse)
+  // console.log("runtime.onMessage:", request, sender, sendResponse)
 
   if (request.selectedText) {
     chrome.contextMenus.update('findSelectedText',
@@ -26,7 +28,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         title: ' Add "' + request.selectedText + '" to multiple highlighter',
       },
       () => {
-        console.log("context menu updated")
+        console.log("context menu updated: ", request.selectedText);
       });
   }
 });
@@ -42,11 +44,13 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
     // reset to default context menu
     chrome.contextMenus.update('findSelectedText', {
       title: ' Add selected text to multiple highlighter',
+    }, () => {
+      console.log("reset to default context menu");
     });
   }
 
   if (info.menuItemId === 'findSelectedText') {
-    console.log("findSelectedText", info.selectionText)
+    console.log("findSelectedText: ", info.selectionText)
 
     // open side panel on the current tab
     chrome.sidePanel.setOptions({
@@ -58,12 +62,22 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
       tabId: tab?.id,
     });
 
-    // wait for side panel to be ready
-    await new Promise(resolve => setTimeout(resolve, WAIT_FOR_SIDE_PANEL_TO_BE_READY_MS));
+    // check page is already highlighted
+    console.log("tabIds: ", tabIds);
+    if (!tabIds.has(tab?.id)) {
+      // wait for side panel to be ready
+      await new Promise(resolve => setTimeout(resolve, WAIT_FOR_SIDE_PANEL_TO_BE_READY_MS));
+      console.log("waited for side panel to be ready")
+    } else {
+      console.log("page is already highlighted")
+    }
+
     // send selected text to sidepanel
-    chrome.runtime.sendMessage({
+    await chrome.runtime.sendMessage({
       findSelectedText: info.selectionText,
     });
+
+    tabIds.add(tab?.id);
   }
 });
 
@@ -83,6 +97,8 @@ async function toggleSidePanel(tabId: number) {
         tabId: tabId,
         enabled: false
       });
+      // remove tabId from set
+      tabIds.delete(tabId);
     }
   });
 
