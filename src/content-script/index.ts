@@ -175,6 +175,11 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
       // remove border for previous position
       $('mark.multiple-highlighter-' + idx).css('border', 'none');
+
+      // set background color
+      const color = request.colorPalate[idx];
+      $('mark.multiple-highlighter-' + idx).css('background', color);
+
       // with border for position
       element.setAttribute("style", "border: 2px solid red;");
 

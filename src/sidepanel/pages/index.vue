@@ -85,7 +85,8 @@ function moveUp(idx: any) {
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     chrome.tabs.sendMessage(tabs[0].id, {
       type: 'moveUp',
-      index: idx
+      index: idx,
+      colorPalate: colorPalate.value,
     });
   });
 };
@@ -94,7 +95,8 @@ function moveDown(idx: any) {
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     chrome.tabs.sendMessage(tabs[0].id, {
       type: 'moveDown',
-      index: idx
+      index: idx,
+      colorPalate: colorPalate.value,
     });
   });
 };
