@@ -19,7 +19,7 @@ chrome.runtime.onInstalled.addListener(async () => {
 });
 
 // update context menu by received selected text
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
   // console.log("runtime.onMessage:", request, sender, sendResponse)
 
   if (request.selectedText) {
@@ -30,6 +30,15 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       () => {
         console.log("context menu updated: ", request.selectedText);
       });
+  }
+
+  if (request.command === "isHighlight") {
+    console.log("command: isHighlight");
+    console.log("tabIds: ", tabIds);
+    console.log("sender.tab?.id: ", sender.tab?.id);
+    await chrome.runtime.sendMessage({
+      isHighlight: tabIds.has(sender.tab?.id),
+    });
   }
 });
 

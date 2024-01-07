@@ -23,15 +23,21 @@ chrome.storage.sync.get(['options'], function (result) {
 
 // re highlight when page loaded
 chrome.runtime.sendMessage({
-  command: "re-highlight",
+  command: "isHighlight",
+}, (response) => {
+  if (response.isHighlight === true) {
+    chrome.runtime.sendMessage({
+      command: "re-highlight",
+    });
+  }
 });
+
 
 // receive message from popup and background
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   sendResponse('content script received message')
-  console.log('request type:', request.type)
+  console.log('request type: ', request.type)
   // console.log('sender', sender)
-
   // console.log('highlights', request.highlights)
   // console.log('length', request.highlights.length)
 
@@ -215,9 +221,9 @@ const MAX_SELECTION_LENGTH = 50;
 document.onselectionchange = () => {
   const selection = document.getSelection();
   const selectedText = selection ? selection.toString() : '';
-  console.log(selectedText);
 
   if (selectedText.length > 0) {
+    console.log("selected: ", selectedText);
     // send selected text to background
     chrome.runtime.sendMessage({
       selectedText: _.truncate(selectedText,
