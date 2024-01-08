@@ -132,6 +132,7 @@ async function toggleSidePanel(tabId: number) {
   await chrome.sidePanel.open({
     tabId: tabId,
   });
+  tabIds.add(tabId);
 }
 
 // when uninstall extension, open a survey form
