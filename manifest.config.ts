@@ -45,6 +45,17 @@ export default defineManifest(async (env) => ({
   host_permissions: ['*://*/*'],
   // options_page: 'src/options/index.html',
   permissions: ['activeTab', 'sidePanel', 'storage', 'contextMenus'],
+  commands: {
+    "toggleSidePanel": {
+      "suggested_key": {
+        "default": "Ctrl+M",
+        "mac": "Command+M",
+        "chromeos": "Ctrl+M",
+        "linux": "Ctrl+M"
+      },
+      "description": "Toggle multiple highlighter panel"
+    },
+  },
   web_accessible_resources: [
     {
       matches: ['*://*/*'],

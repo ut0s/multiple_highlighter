@@ -18,6 +18,18 @@ chrome.runtime.onInstalled.addListener(async () => {
   });
 });
 
+// shortcut command
+chrome.commands.onCommand.addListener((command, tab) => {
+  console.log(`Command: ${command}`);
+  switch (command) {
+    case "toggleSidePanel":
+      toggleSidePanel(tab?.id);
+      break;
+    default:
+      break;
+  }
+});
+
 // update context menu by received selected text
 chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
   // console.log("runtime.onMessage:", request, sender, sendResponse)
