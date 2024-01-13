@@ -6,6 +6,7 @@ import IconsResolver from 'unplugin-icons/resolver'
 import Icons from 'unplugin-icons/vite'
 import Components from 'unplugin-vue-components/vite'
 import { defineConfig } from 'vite'
+import zipPack from "vite-plugin-zip-pack";
 import Pages from 'vite-plugin-pages'
 import manifest from './manifest.config'
 
@@ -81,6 +82,11 @@ export default defineConfig(({ command }) => ({
         )
       },
     },
+
+    zipPack({
+      inDir: 'dist',
+      outDir: './',
+    }),
   ],
   build: {
     rollupOptions: {
