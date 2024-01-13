@@ -4,7 +4,8 @@ const WAIT_FOR_SIDE_PANEL_TO_BE_READY_MS = 800
 
 const tabIds = new Set<number>();
 
-chrome.runtime.onInstalled.addListener(async () => {
+chrome.runtime.onInstalled.addListener(async (details) => {
+  // setting context menu
   chrome.contextMenus.create({
     id: 'toggleSidePanel',
     title: ' Toggle multiple highlighter panel',
@@ -16,6 +17,17 @@ chrome.runtime.onInstalled.addListener(async () => {
     title: ' Add selected text to multiple highlighter',
     contexts: ['selection']
   });
+
+  //
+  if (details.reason === 'update') {
+    console.log('Extension updated');
+    // force reload all tabs
+    chrome.tabs.query({}, (tabs) => {
+      tabs.forEach((tab) => {
+        chrome.tabs.reload(tab.id);
+      });
+    });
+  }
 });
 
 // shortcut command

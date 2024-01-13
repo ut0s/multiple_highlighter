@@ -131,9 +131,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         //   });
         // }
         // );
-        // $('textarea').highlightWithinTextarea({
-        //   highlight: 'license'
-        // });
 
         console.log("colorPalate", color)
       }
