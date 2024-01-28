@@ -1,5 +1,9 @@
 <script setup lang="ts">
-const props = defineProps(['label', 'tooltip', 'isChecked'])
+const props = defineProps({
+  label: String,
+  tooltip: String,
+  isChecked: Boolean
+})
 const emit = defineEmits(['update:isChecked'])
 
 const toggle = () => {

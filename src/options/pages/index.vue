@@ -79,38 +79,46 @@ onMounted(() => {
     </div>
 
     <div class="text-left text-lg">
-      <CheckBox label="use regex"
+      <CheckBox
+label="use regex"
         tooltip="Whether to search for each word separated by a blank instead of the complete term"
-        :isChecked="options.useRegex" @update:isChecked="options.useRegex = !options.useRegex" />
+        :is-checked="options.useRegex" @update:is-checked="options.useRegex = !options.useRegex" />
 
-      <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions" target="_blank"
+      <a
+href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions" target="_blank"
         class="text-slate-400 underline text-sm"> (more info about regex)</a>
 
       <hr class="my-1 h-px border-0 bg-gray-300" />
 
-      <CheckBox label="dialectics" tooltip="If <a>diacritic</a> characters should be matched. For example &quot;piękny&quot; would also
+      <CheckBox
+label="dialectics" tooltip="If <a>diacritic</a> characters should be matched. For example &quot;piękny&quot; would also
         match &quot;piekny&quot; and &quot;doner&quot; would also match &quot;döner&quot;"
-        :isChecked="options.diacritics" @update:isChecked="options.diacritics = !options.diacritics" />
+        :is-checked="options.diacritics" @update:is-checked="options.diacritics = !options.diacritics" />
       <a href="https://en.wikipedia.org/wiki/Diacritic" target="_blank" class="text-slate-400 underline text-sm"> (more
         info about
         diacritic)</a>
-      <CheckBox label="iframes"
+      <CheckBox
+label="iframes"
         tooltip="Whether to search also inside iframes. If you don't have permissions to some iframes they will be silently skipped."
-        :isChecked="options.iframes" @update:isChecked="options.iframes = !options.iframes" />
-      <CheckBox label="acrossElements" tooltip="Whether to search for matches across elements."
-        :isChecked="options.acrossElements" @update:isChecked="options.acrossElements = !options.acrossElements" />
-      <CheckBox label="caseSensitive" tooltip="Whether to search case sensitive" :isChecked="options.caseSensitive"
-        @update:isChecked="options.caseSensitive = !options.caseSensitive" />
-      <CheckBox label="ignoreJoiners" tooltip="Whether to search case sensitive" :isChecked="options.ignoreJoiners"
-        @update:isChecked="options.ignoreJoiners = !options.ignoreJoiners" />
+        :is-checked="options.iframes" @update:is-checked="options.iframes = !options.iframes" />
+      <CheckBox
+label="acrossElements" tooltip="Whether to search for matches across elements."
+        :is-checked="options.acrossElements" @update:is-checked="options.acrossElements = !options.acrossElements" />
+      <CheckBox
+label="caseSensitive" tooltip="Whether to search case sensitive" :is-checked="options.caseSensitive"
+        @update:is-checked="options.caseSensitive = !options.caseSensitive" />
+      <CheckBox
+label="ignoreJoiners" tooltip="Whether to search case sensitive" :is-checked="options.ignoreJoiners"
+        @update:is-checked="options.ignoreJoiners = !options.ignoreJoiners" />
 
       <div class="block my-1">
         <div class="inline-block text-lg text-slate-800 dark:text-slate-400">
           accuracy:
         </div>
-        <select id="accuracy"
-          class="text-slate-500 border-2 rounded-full focus:ring-0 focus:ring-offset-0 focus:ring-offset-transparent focus:ring-white focus:ring-opacity-0"
-          v-model="options.accuracy">
+        <select
+id="accuracy"
+          v-model="options.accuracy"
+          class="text-slate-500 border-2 rounded-full focus:ring-0 focus:ring-offset-0 focus:ring-offset-transparent focus:ring-white focus:ring-opacity-0">
           <option disabled>Default: partially</option>
           <option> partially</option>
           <option>complementary</option>
@@ -123,9 +131,10 @@ onMounted(() => {
         <div class="inline-block text-lg text-slate-800 dark:text-slate-400">
           wildcards:
         </div>
-        <select id="wildcards"
-          class="text-slate-500 border-2 rounded-full focus:ring-0 focus:ring-offset-0 focus:ring-offset-transparent focus:ring-white focus:ring-opacity-0"
-          v-model="options.wildcards">
+        <select
+id="wildcards"
+          v-model="options.wildcards"
+          class="text-slate-500 border-2 rounded-full focus:ring-0 focus:ring-offset-0 focus:ring-offset-transparent focus:ring-white focus:ring-opacity-0">
           <option disabled>Default: disabled</option>
           <option>disabled</option>
           <option>enabled</option>
@@ -138,8 +147,9 @@ onMounted(() => {
     <hr class="my-3 h-px border-0 bg-gray-300" />
 
     <div class="flex justify-center mb-3 text-lg dark:text-slate-400">
-      <button @click="resetDefaultOptions"
-        class="rounded-full border-solid border-2 px-2 text-slate-800 dark:text-slate-400"> reset to
+      <button
+class="rounded-full border-solid border-2 px-2 text-slate-800 dark:text-slate-400"
+        @click="resetDefaultOptions"> reset to
         default</button>
     </div>
 

@@ -24,7 +24,9 @@ chrome.runtime.onInstalled.addListener(async (details) => {
     // force reload all tabs
     chrome.tabs.query({}, (tabs) => {
       tabs.forEach((tab) => {
-        chrome.tabs.reload(tab.id);
+        if (tab.id) {
+          chrome.tabs.reload(tab.id);
+        }
       });
     });
   }
@@ -43,9 +45,7 @@ chrome.commands.onCommand.addListener((command, tab) => {
 });
 
 // update context menu by received selected text
-chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
-  // console.log("runtime.onMessage:", request, sender, sendResponse)
-
+chrome.runtime.onMessage.addListener(async (request, sender) => {
   if (request.selectedText) {
     chrome.contextMenus.update('findSelectedText',
       {

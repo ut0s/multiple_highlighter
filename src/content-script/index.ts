@@ -14,7 +14,7 @@ let foundCount: number[] = [];
 let position: number[] = [];
 
 // options
-let options: any = {};
+let options: object = {};
 // read options from storage when content script is loaded
 chrome.storage.sync.get(['options'], function (result) {
   console.table(result.options);
@@ -25,7 +25,7 @@ chrome.storage.sync.get(['options'], function (result) {
 chrome.runtime.sendMessage({
   command: "isHighlight",
 }, (response) => {
-  if (response.isHighlight === true) {
+  if (response && response.isHighlight === true) {
     chrome.runtime.sendMessage({
       command: "re-highlight",
     });
@@ -50,9 +50,9 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         if (options.useRegex === true) {
           console.log("use regex", options.useRegex);
           // Create regex
-          var flags = highlight.replace(/.*\/([gimy]*)$/, '$1');
-          var pattern = highlight.replace(new RegExp('^/(.*?)/' + flags + '$'), '$1');
-          var regex = new RegExp(pattern, flags);
+          const flags = highlight.replace(/.*\/([gimy]*)$/, '$1');
+          const pattern = highlight.replace(new RegExp('^/(.*?)/' + flags + '$'), '$1');
+          const regex = new RegExp(pattern, flags);
 
           instance.markRegExp(regex, {
             // "element": "mark",

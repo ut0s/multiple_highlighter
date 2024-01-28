@@ -10,7 +10,8 @@ const isOpen = ref(false);
   <icon-help-circle class="inline-block mx-1 text-slate-400 text-sm" @click="isOpen = true" />
   <div class="container mx-auto">
     <div class="flex justify-center">
-      <div v-show="isOpen" class="
+      <div
+v-show="isOpen" class="
           absolute
           inset-0
           flex

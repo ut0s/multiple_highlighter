@@ -42,6 +42,3 @@ import GithubSponsor from '~/components/GithubSponsor.vue';
     This extension is made by&nbsp; <a href=" https://in-da-shell.com/" target="_blank" class="underline">ut0s</a>.
   </footer>
 </template>
-
-
-<style scoped></style>

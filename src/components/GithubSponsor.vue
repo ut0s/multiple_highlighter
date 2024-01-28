@@ -7,7 +7,7 @@ import IconLogosGithub from '~icons/logos/github'
   <div class="block">
     <a target="_blank" href="https://github.com/sponsors/ut0s">
       <button
-        class="flex flex-row items-center rounded-3xl p-2 rounded-full border-slate-100 border shadow-md dark:border-slate-400 dark:shadow-slate-400">
+        class="flex flex-row items-center p-2 rounded-full border-slate-100 border shadow-md dark:border-slate-400 dark:shadow-slate-400">
         <div class="flex w-2"></div>
         <span class="flex animate-bounce">
           <icon-github class="text-2xl dark:text-slate-400" />
@@ -23,6 +23,3 @@ import IconLogosGithub from '~icons/logos/github'
     </a>
   </div>
 </template>
-
-
-<style scoped></style>

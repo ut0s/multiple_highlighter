@@ -30,6 +30,7 @@ const colorPalate = ref(['']); // v-model
 
 // watch highlight array change and send message to content script
 watch(highlights, (value) => {
+  console.log('highlights changed');
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     console.log("tab:", tabs)
     chrome.tabs.sendMessage(tabs[0].id, {
@@ -49,10 +50,9 @@ watch(highlights, (value) => {
 
 // get highlight found counts from content script
 // add selected text to highlight array
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener((request, sender) => {
   console.log('received request:', request);
   console.log('received sender:', sender);
-  // console.log('received sendResponse:', sendResponse);
 
   if (request.foundCount !== undefined) {
     foundCount.value = request.foundCount;
@@ -81,7 +81,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 });
 
 // move class multiple-highlighter-[idx] in page
-function moveUp(idx: any) {
+function moveUp(idx: number) {
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     chrome.tabs.sendMessage(tabs[0].id, {
       type: 'moveUp',
@@ -91,7 +91,7 @@ function moveUp(idx: any) {
   });
 };
 
-function moveDown(idx: any) {
+function moveDown(idx: number) {
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     chrome.tabs.sendMessage(tabs[0].id, {
       type: 'moveDown',
@@ -102,7 +102,7 @@ function moveDown(idx: any) {
 };
 
 // remove
-function remove(index: any) {
+function remove(index: number) {
   highlights.value.splice(index, 1);
   foundCount.value.splice(index, 1);
   position.value.splice(index, 1);
@@ -186,25 +186,29 @@ function resetToDefaultColorPalate() {
 <template>
   <div class="flex">
     <div class="text-2xl text-slate-500">
-      <icon-refresh-circle v-tooltip="{ content: 'Reset highlight color to default' }"
+      <icon-refresh-circle
+v-tooltip="{ content: 'Reset highlight color to default' }"
         @click="resetToDefaultColorPalate()" />
     </div>
     <div class="grow"></div>
     <div class="text-2xl text-slate-500">
-      <RouterLink to="/options" v-tooltip="{ content: 'Open option page' }">
+      <RouterLink v-tooltip="{ content: 'Open option page' }" to="/options">
         <icon-dots-vertical-circle />
       </RouterLink>
     </div>
   </div>
 
-  <div v-for="(highlight, index) in              highlights             " :key="index"
+  <div
+v-for="(highlight, index) in              highlights             " :key="index"
     class="flex border rounded m-1 divide-x">
     <div class="flex grow">
       <div>
-        <input type="color" v-model="colorPalate[index]" class="w-4 h-full bg-white"
-          v-tooltip="{ content: 'Change highlight color' }" />
+        <input
+v-model="colorPalate[index]" v-tooltip="{ content: 'Change highlight color' }" type="color"
+          class="w-4 h-full bg-white" />
       </div>
-      <input v-model="highlights[index]" type="" class="grow  text-slate-800 bg-white" placeholder="  highlight text"
+      <input
+v-model="highlights[index]" type="" class="grow  text-slate-800 bg-white" placeholder="  highlight text"
         @blur="shrink_highlights()" @keydown.enter="shrink_highlights()" />
       <div v-if="highlight && Number(foundCount[index]) != 0" class="flex text-base px-1 text-slate-400 bg-white">
         {{ position[index] + 1 }} / {{ foundCount[index] }}
@@ -225,12 +229,12 @@ function resetToDefaultColorPalate() {
     </div>
   </div>
   <div class="flex justify-center mx-5 text-2xl text-slate-500">
-    <icon-plus-circle class="m-1" v-tooltip="{ content: 'Add text box' }" @click="shrink_highlights()" />
-    <icon-delete-circle class="m-1" v-tooltip="{ content: 'Clear all highlights' }" @click="clear()" />
+    <icon-plus-circle v-tooltip="{ content: 'Add text box' }" class="m-1" @click="shrink_highlights()" />
+    <icon-delete-circle v-tooltip="{ content: 'Clear all highlights' }" class="m-1" @click="clear()" />
   </div>
 
   <div class="flex justify-center underline m-5 text-slate-500">
-    <RouterLink to="/about" v-tooltip="{ content: 'README (How to use)' }"> README </RouterLink>
+    <RouterLink v-tooltip="{ content: 'README (How to use)' }" to="/about"> README </RouterLink>
   </div>
 </template>
 
