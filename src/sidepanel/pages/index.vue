@@ -39,6 +39,8 @@ watch(highlights, (value) => {
       type: 'highlight',
       highlights: value,
       colorPalate: colorPalate.value
+    }).catch((e) => {
+      console.error(e);
     });
   });
   // console.table(value);
@@ -73,6 +75,8 @@ chrome.runtime.onMessage.addListener((request, sender) => {
     highlights.value.push(request.findSelectedText);
     highlights.value.push('');
   }
+
+  return true;
 });
 
 // set re-highlight timer for 1 second when page loaded
@@ -187,8 +191,7 @@ function resetToDefaultColorPalate() {
 <template>
   <div class="flex">
     <div class="text-2xl text-slate-500">
-      <icon-refresh-circle
-v-tooltip="{ content: 'Reset highlight color to default' }"
+      <icon-refresh-circle v-tooltip="{ content: 'Reset highlight color to default' }"
         @click="resetToDefaultColorPalate()" />
     </div>
     <div class="grow"></div>
@@ -199,17 +202,14 @@ v-tooltip="{ content: 'Reset highlight color to default' }"
     </div>
   </div>
 
-  <div
-v-for="(highlight, index) in              highlights             " :key="index"
+  <div v-for="(highlight, index) in              highlights             " :key="index"
     class="flex border rounded m-1 divide-x">
     <div class="flex grow">
       <div>
-        <input
-v-model="colorPalate[index]" v-tooltip="{ content: 'Change highlight color' }" type="color"
+        <input v-model="colorPalate[index]" v-tooltip="{ content: 'Change highlight color' }" type="color"
           class="w-4 h-full bg-white" />
       </div>
-      <input
-v-model="highlights[index]" type="" class="grow  text-slate-800 bg-white" placeholder="  highlight text"
+      <input v-model="highlights[index]" type="" class="grow  text-slate-800 bg-white" placeholder="  highlight text"
         @blur="shrink_highlights()" @keydown.enter="shrink_highlights()" />
       <div v-if="highlight && Number(foundCount[index]) != 0" class="flex text-base px-1 text-slate-400 bg-white">
         {{ position[index] + 1 }} / {{ foundCount[index] }}

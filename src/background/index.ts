@@ -37,6 +37,8 @@ chrome.runtime.onInstalled.addListener(async (details) => {
       });
     });
   }
+
+  return true;
 });
 
 // shortcut command
@@ -49,6 +51,8 @@ chrome.commands.onCommand.addListener((command, tab) => {
     default:
       break;
   }
+
+  return true;
 });
 
 // update context menu by received selected text
@@ -62,6 +66,8 @@ chrome.runtime.onMessage.addListener((request) => {
         console.log("context menu updated: ", request.selectedText);
       });
   }
+
+  return true;
 });
 
 
@@ -108,6 +114,8 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
 
     tabIds.add(tab?.id);
   }
+
+  return true;
 });
 
 // open side panel on the current tab from toolbar icon
@@ -115,6 +123,7 @@ chrome.action.onClicked.addListener(async (tab) => {
   console.log("action.onClicked:", tab)
 
   toggleSidePanel(tab?.id);
+  return true;
 });
 
 async function toggleSidePanel(tabId: number) {
