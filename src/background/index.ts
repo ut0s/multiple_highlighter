@@ -55,15 +55,6 @@ chrome.runtime.onMessage.addListener(async (request, sender) => {
         console.log("context menu updated: ", request.selectedText);
       });
   }
-
-  if (request.command === "isHighlight") {
-    console.log("command: isHighlight");
-    console.log("tabIds: ", tabIds);
-    console.log("sender.tab?.id: ", sender.tab?.id);
-    await chrome.runtime.sendMessage({
-      isHighlight: tabIds.has(sender.tab?.id),
-    });
-  }
 });
 
 

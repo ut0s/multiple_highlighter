@@ -22,6 +22,8 @@ const defaultHighlightColorPalette = [
   '#ffae77',
 ]; // ref https://www.pinterest.jp/pin/610871136954541241/
 
+const kReHighlightInterval = 1000; // re-highlight interval in ms
+
 // v-medel for input texts
 const highlights = ref(['']); // v-model
 const foundCount = ref(['']); // v-model
@@ -71,14 +73,13 @@ chrome.runtime.onMessage.addListener((request, sender) => {
     highlights.value.push(request.findSelectedText);
     highlights.value.push('');
   }
-
-  // re-highlight when page is load or reloaded
-  if (request.command == 're-highlight') {
-    console.log('received re-highlight command');
-    // touch highlights.value to trigger watch
-    shrink_highlights();
-  }
 });
+
+// set re-highlight timer for 1 second when page loaded
+setInterval(() => {
+  shrink_highlights();
+  console.log('run re-highlight');
+}, kReHighlightInterval);
 
 // move class multiple-highlighter-[idx] in page
 function moveUp(idx: number) {

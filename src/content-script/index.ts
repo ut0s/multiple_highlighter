@@ -21,18 +21,6 @@ chrome.storage.sync.get(['options'], function (result) {
   options = result.options
 });
 
-// re highlight when page loaded
-chrome.runtime.sendMessage({
-  command: "isHighlight",
-}, (response) => {
-  if (response && response.isHighlight === true) {
-    chrome.runtime.sendMessage({
-      command: "re-highlight",
-    });
-  }
-});
-
-
 // receive message from popup and background
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   sendResponse('content script received message')
