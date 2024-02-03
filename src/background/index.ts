@@ -5,6 +5,13 @@ const WAIT_FOR_SIDE_PANEL_TO_BE_READY_MS = 800
 const tabIds = new Set<number>();
 
 chrome.runtime.onInstalled.addListener(async (details) => {
+  // when install extension, remove all context menu
+  chrome.contextMenus.removeAll(
+    () => {
+      console.log("remove all context menu");
+    }
+  );
+
   // setting context menu
   chrome.contextMenus.create({
     id: 'toggleSidePanel',
@@ -45,7 +52,7 @@ chrome.commands.onCommand.addListener((command, tab) => {
 });
 
 // update context menu by received selected text
-chrome.runtime.onMessage.addListener(async (request, sender) => {
+chrome.runtime.onMessage.addListener((request) => {
   if (request.selectedText) {
     chrome.contextMenus.update('findSelectedText',
       {
@@ -71,9 +78,7 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
     }, () => {
       console.log("reset to default context menu");
     });
-  }
-
-  if (info.menuItemId === 'findSelectedText') {
+  } else if (info.menuItemId === 'findSelectedText') {
     console.log("findSelectedText: ", info.selectionText)
 
     // open side panel on the current tab
@@ -97,7 +102,7 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
     }
 
     // send selected text to sidepanel
-    await chrome.runtime.sendMessage({
+    chrome.runtime.sendMessage({
       findSelectedText: info.selectionText,
     });
 
@@ -122,7 +127,7 @@ async function toggleSidePanel(tabId: number) {
         enabled: false
       });
       // remove tabId from set
-      tabIds.delete(tabId);
+      onTabRemoved(tabId)
     }
   });
 
@@ -136,6 +141,13 @@ async function toggleSidePanel(tabId: number) {
     tabId: tabId,
   });
   tabIds.add(tabId);
+}
+
+function onTabRemoved(tabId: number) {
+  console.log("onTabRemoved: ", tabId)
+
+  // remove tabId from set
+  tabIds.delete(tabId);
 }
 
 // when uninstall extension, open a survey form
